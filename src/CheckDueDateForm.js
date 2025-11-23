@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from './api';
 
 const CheckDueDateForm = () => {
   const [message, setMessage] = useState('');
@@ -11,7 +11,7 @@ const CheckDueDateForm = () => {
   const handleCheckDueDate = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/check-due-date');
+      const response = await api.post(`/check-due-date`);
 
       setMessage(response.data.message);
       setMessageType('success');

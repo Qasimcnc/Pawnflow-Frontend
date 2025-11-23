@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';  // Import needed routing components
-import RegisterForm from './RegisterForm';
+// import { Route, Switch, Redirect } from 'react-router-dom';  // Import needed routing components
+// import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import CreateLoanForm from './CreateLoanForm';
 import SearchLoanForm from './SearchLoanForm';
