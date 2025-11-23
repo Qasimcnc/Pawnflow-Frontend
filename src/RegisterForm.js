@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from './api';
 
 const RegisterForm = () => {
   const [username, setUsername] = useState('');
@@ -11,7 +11,7 @@ const RegisterForm = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:5000/register', { username, password, role });
+      const res = await api.post(`/register`, { username, password, role });
       setMessage('User registered successfully!');
     } catch (err) {
       setMessage('Error registering user');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from './api';
 
 const RedeemLoanForm = ({ loggedInUser }) => {
   const [loanId, setLoanId] = useState('');
@@ -12,7 +12,7 @@ const RedeemLoanForm = ({ loggedInUser }) => {
   // Search loan by transaction number
   const handleSearchLoan = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/search-loan', {
+      const response = await api.get(`/search-loan`, {
         params: { transactionNumber: loanId },
       });
 
@@ -37,7 +37,7 @@ const RedeemLoanForm = ({ loggedInUser }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/redeem-loan', {
+      const response = await api.post(`/redeem-loan`, {
         loanId: loan.id,
         redeemedByUserId: loggedInUser?.id,
         redeemedByUsername: loggedInUser?.username
@@ -61,7 +61,7 @@ const RedeemLoanForm = ({ loggedInUser }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/forfeit-loan', {
+      const response = await api.post(`/forfeit-loan`, {
         loanId: loan.id,
         forfeitedByUserId: loggedInUser?.id,
         forfeitedByUsername: loggedInUser?.username

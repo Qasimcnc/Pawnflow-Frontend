@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "./api";
 
 const MakePaymentForm = ({ loggedInUser }) => {
+  
   const [transactionNumber, setTransactionNumber] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [paymentAmount, setPaymentAmount] = useState("");
@@ -13,7 +14,7 @@ const MakePaymentForm = ({ loggedInUser }) => {
   // Search loan using transaction number
   const handleSearchLoan = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/search-loan", {
+      const response = await api.get(`/search-loan`, {
         params: { transactionNumber },
       });
 
@@ -29,7 +30,7 @@ const MakePaymentForm = ({ loggedInUser }) => {
       setMessage("");
 
       // Fetch payment history safely
-      const historyRes = await axios.get("http://localhost:5000/payment-history", {
+      const historyRes = await api.get(`/payment-history`, {
         params: { loanId: foundLoan.id },
       });
 
@@ -63,7 +64,7 @@ const MakePaymentForm = ({ loggedInUser }) => {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/make-payment", {
+      const response = await api.post(`/make-payment`, {
         loanId: loan.id,
         paymentMethod,
         paymentAmount,
@@ -89,7 +90,7 @@ const MakePaymentForm = ({ loggedInUser }) => {
       if (totalPaymentsMade >= loan.interest_amount && new Date() > new Date(loan.due_date)) {
         // Attempt to extend loan due date
         try {
-          const extendResponse = await axios.post("http://localhost:5000/extend-loan", {
+          const extendResponse = await api.post(`/extend-loan`, {
             loanId: loan.id,
           });
           setMessage("Payment successful! Loan due date extended by 30 days!");

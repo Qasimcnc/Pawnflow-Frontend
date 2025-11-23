@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from './api';
 
 const ExtendLoanForm = ({ loggedInUser }) => {
+  
   const [transactionNumber, setTransactionNumber] = useState('');
   const [loan, setLoan] = useState(null);
   const [message, setMessage] = useState('');
@@ -16,7 +17,7 @@ const ExtendLoanForm = ({ loggedInUser }) => {
     }
 
     try {
-      const response = await axios.get('http://localhost:5000/search-loan', {
+      const response = await api.get(`/search-loan`, {
         params: { transactionNumber },
       });
 
@@ -46,7 +47,7 @@ const ExtendLoanForm = ({ loggedInUser }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/extend-loan', {
+      const response = await api.post(`/extend-loan`, {
         loanId: loan.id,
         extendedByUserId: loggedInUser?.id,
         extendedByUsername: loggedInUser?.username

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from './api';
 import { Link } from 'react-router-dom';  // Import the Link component for navigation
 
 const LoginForm = ({ onLoginSuccess }) => {
@@ -11,7 +11,7 @@ const LoginForm = ({ onLoginSuccess }) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post('http://localhost:5000/login', { username, password });
+  const res = await api.post(`/login`, { username, password });
       
       // After successful login, pass the user details to the parent component (App)
       const user = { username: res.data.username }; // Assuming the backend returns the username

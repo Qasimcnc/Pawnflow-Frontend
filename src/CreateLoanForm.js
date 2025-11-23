@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from './api';
 import { jsPDF } from 'jspdf'; // Import jsPDF for PDF generation
 
 const CreateLoanForm = ({ loggedInUser }) => {
@@ -95,7 +95,7 @@ const CreateLoanForm = ({ loggedInUser }) => {
 
     try {
       console.log('Creating loan, payload:', loanData);
-      const response = await axios.post('http://localhost:5000/create-loan', loanData);
+  const response = await api.post(`/create-loan`, loanData);
       setMessage('Loan created successfully!');
 
       // Generate PDF after loan creation

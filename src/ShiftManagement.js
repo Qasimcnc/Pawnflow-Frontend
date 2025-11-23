@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from './api';
 
 const ShiftManagement = ({ userId = 1 }) => {
+  
   const [activeTab, setActiveTab] = useState('start-shift'); // 'start-shift', 'end-shift', 'history', 'today-summary', 'shift-report'
   const [openingBalance, setOpeningBalance] = useState('');
   const [closingBalance, setClosingBalance] = useState('');
@@ -22,7 +23,7 @@ const ShiftManagement = ({ userId = 1 }) => {
 
   const fetchCurrentShift = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/current-shift/${userId}`);
+      const response = await api.get(`/current-shift/${userId}`);
       setCurrentShift(response.data);
     } catch (error) {
       setCurrentShift(null);
@@ -31,7 +32,7 @@ const ShiftManagement = ({ userId = 1 }) => {
 
   const fetchShiftHistory = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/shift-history/${userId}`);
+      const response = await api.get(`/shift-history/${userId}`);
       setShiftHistory(response.data);
     } catch (error) {
       console.error('Error fetching shift history:', error);
@@ -41,9 +42,7 @@ const ShiftManagement = ({ userId = 1 }) => {
 
   const fetchTodaySummary = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/today-shift-summary/${userId}`
-      );
+      const response = await api.get(`/today-shift-summary/${userId}`);
       setTodaySummary(response.data);
       setMessage('');
       setMessageType('');
@@ -62,9 +61,7 @@ const ShiftManagement = ({ userId = 1 }) => {
     }
 
     try {
-      const response = await axios.get(
-        `http://localhost:5000/shift-report/${shiftId}`
-      );
+      const response = await api.get(`/shift-report/${shiftId}`);
       setShiftReport(response.data);
       setMessage('');
       setMessageType('');
@@ -83,7 +80,7 @@ const ShiftManagement = ({ userId = 1 }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/start-shift', {
+      const response = await api.post(`/start-shift`, {
         userId,
         openingBalance: parseFloat(openingBalance),
       });
@@ -108,7 +105,7 @@ const ShiftManagement = ({ userId = 1 }) => {
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/end-shift', {
+      const response = await api.post(`/end-shift`, {
         userId,
         closingBalance: parseFloat(closingBalance),
         notes: notes || null,

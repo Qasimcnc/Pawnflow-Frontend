@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "./api";
 
 const SearchLoanForm = ({ loggedInUser }) => {
   const [firstName, setFirstName] = useState("");
@@ -18,7 +18,7 @@ const SearchLoanForm = ({ loggedInUser }) => {
     e.preventDefault();
 
     try {
-      const response = await axios.get("http://localhost:5000/search-loan", {
+      const response = await api.get(`/search-loan`, {
         params: {
           firstName,
           lastName,
@@ -46,7 +46,7 @@ const SearchLoanForm = ({ loggedInUser }) => {
       const firstLoan = response.data[0];
       if (firstLoan && (firstLoan.id || firstLoan.transaction_number)) {
         try {
-          const paymentRes = await axios.get("http://localhost:5000/payment-history", {
+          const paymentRes = await api.get(`/payment-history`, {
             params: { loanId: firstLoan.id || firstLoan.transaction_number, _ts: Date.now() },
             headers: {
               'Cache-Control': 'no-cache',
@@ -91,7 +91,7 @@ const SearchLoanForm = ({ loggedInUser }) => {
       const newTotalPayableAmount = newLoanAmount + newInterestAmount;
       const newRemainingBalance = newTotalPayableAmount;
 
-      const response = await axios.post("http://localhost:5000/add-money", {
+      const response = await api.post(`/add-money`, {
         loanId: selectedLoanId,
         amount: amountToAddNum,
         newLoanAmount,
@@ -129,7 +129,7 @@ const SearchLoanForm = ({ loggedInUser }) => {
   // Redeem loan if fully paid
   const handleRedeemLoan = async (loanId) => {
     try {
-      const response = await axios.post("http://localhost:5000/redeem-loan", {
+      const response = await api.post(`/redeem-loan`, {
         loanId,
         redeemedByUserId: loggedInUser?.id,
         redeemedByUsername: loggedInUser?.username
